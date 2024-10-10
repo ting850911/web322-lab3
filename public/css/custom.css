@@ -1,0 +1,39 @@
+/* general */
+.navbar {
+  background-color: #fff !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px !important;
+}
+
+.navbar .active {
+  border-bottom: 1px solid red;
+}
+
+
+/* home start */
+.material-symbols-outlined {
+  display: inline-block;
+  width: 50px;
+  aspect-ratio: 1/1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNNDgwLTIwMCAyNDAtNDQwbDU2LTU2IDE4NCAxODMgMTg0LTE4MyA1NiA1Ni0yNDAgMjQwWm0wLTI0MEwyNDAtNjgwbDU2LTU2IDE4NCAxODMgMTg0LTE4MyA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==");
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+p.card-text {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  min-height: 4rem;
+  line-height: 1.5;
+  -webkit-line-clamp: 3;
+  margin-bottom: 1rem;
+}
