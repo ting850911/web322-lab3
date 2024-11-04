@@ -1,0 +1,26 @@
+nav.navbar
+  div.flex-1
+    a(href="/" class="text-xl") Climate Solutions
+  div.flex-1
+    a(href="/about") About
+  div.flex-1.dropdown
+    button(type="button") Sector
+    ul(tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow")
+      li
+        a(href="/solutions/projects?sector=Industry") Project 1
+      li
+        a(href="/solutions/projects?sector=Transportation") Project 2
+      li
+        a(href="/solutions/projects?sector=Electricity") Project 3
+script.
+  document.addEventListener('DOMContentLoaded', function () {
+    const navbar = document.querySelector('.navbar');
+    document.addEventListener('scroll', function () {
+      if (window.scrollY > 0) {
+        navbar.style.position = 'fixed';
+        navbar.style.zIndex = '99';
+      } else {
+        navbar.style.position = 'static';
+      }
+    });
+  });

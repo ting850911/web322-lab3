@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title About
+    link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="/css/custom.css")
+  body
+    include partials/navbar.pug
+    div.min-h-screen.container.mx-auto
+      div.hero.bg-base-200.p-4
+        div.hero-content.text-center
+          div.max-w-md
+            h1.text-5xl.font-bold About
+            p.py-6 All about me
+      div(class="grid grid-cols-1 md:grid-cols-2 gap-2 p-2")
+        img(src="https://fakeimg.pl/350" alt="A representation of me" class="h-auto")
+        div
+          h2.text-3xl.font-bold.mb-1 Who am I?
+          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse nostrum, voluptatem earum impedit iste, delectus ipsa non distinctio unde architecto neque nemo provident iure repellendus blanditiis placeat quaerat, consequatur obcaecati?
+          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt soluta eveniet laudantium minus expedita rem fugit voluptates provident ipsam sunt, quas alias maiores sit vel, in sequi iure pariatur vero.Beatae excepturi maxime ducimus qui, facere a veniam doloremque velit ea dolores inventore nisi quae quis sapiente officia ad ab possimus molestias. Architecto sed doloremque dolorem sapiente? Maxime, itaque quaerat!Reiciendis necessitatibus odio distinctio, earum hic veniam repudiandae excepturi aliquam inventore ullam, blanditiis libero consequuntur dolorum perspiciatis consequatur nemo esse eos placeat cumque dicta, vel nihil officia sit. Ab, perspiciatis?
+    include partials/footer.pug

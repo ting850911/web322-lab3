@@ -19,6 +19,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
 
 const projectData = require('./modules/projects');
 projectData
@@ -33,11 +34,11 @@ projectData
   });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/home.html'));
+  res.render('home');
 });
 
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/about.html'));
+  res.render('about');
 });
 
 app.get('/solutions/projects', (req, res) => {
@@ -45,13 +46,13 @@ app.get('/solutions/projects', (req, res) => {
   if (sector) {
     projectData
       .getProjectsBySector(sector)
-      .then((projects) => res.json(projects))
-      .catch((err) => res.status(404).sendFile(path.join(__dirname, 'views', '404.html')));
+      .then((projects) => res.render('projects', { projects }))
+      .catch((err) => res.status(404).render('404'));
   } else {
     projectData
       .getAllProjects()
-      .then((projects) => res.json(projects))
-      .catch((err) => res.status(404).sendFile(path.join(__dirname, 'views', '404.html')));
+      .then((projects) => res.render('projects', { projects }))
+      .catch((err) => res.status(404).render('404'));
   }
 });
 
@@ -59,13 +60,13 @@ app.get('/solutions/projects/:id', (req, res) => {
   const projectId = parseInt(req.params.id, 10);
   projectData
     .getProjectById(projectId)
-    .then((project) => res.json(project))
-    .catch((err) => res.status(404).sendFile(path.join(__dirname, 'views', '404.html')));
+    .then((project) => res.render('projectDetails', { project }))
+    .catch((err) => res.status(404).render('404'));
 });
 
 // Custom 404 page
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
+  res.status(404).render('404');
 });
 
 app.listen(HTTP_PORT, () => {
