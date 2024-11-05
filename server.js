@@ -21,6 +21,12 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
+// Middleware to add timestamp to every render
+app.use((req, res, next) => {
+  res.locals.timestamp = Date.now();
+  next();
+});
+
 const projectData = require('./modules/projects');
 projectData
   .initialize()
