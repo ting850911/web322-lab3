@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Projects
+    link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="/css/custom.css")
+  body
+    include partials/navbar.pug
+    .min-h-screen.container.mx-auto
+      .hero.bg-base-200.p-4
+        .hero-content.text-center
+          .max-w-md
+            h1.text-5xl.font-bold Projects
+            p.py-6 Browse the current list of Projects in our database. Click the theme to filter by sectors such as:
+            ul.flex.justify-center.gap-2
+              - var sectors = ['Industry', 'Transportation', 'Electricity'];
+              each sector in sectors
+                li 
+                  a(href=`/solutions/projects?sector=${sector}` class="btn btn-primary btn-xs")= sector
+      .overflow-x-auto
+        if projects
+          table.table.table-zebra
+            thead
+              tr
+                th Title
+                th Sector
+                th Summary
+                th Details
+            tbody
+              each project in projects
+                tr
+                  td(class="font-bold")= project.title
+                  td(class="text-center")= project.sector
+                  td= project.summary_short
+                  td
+                    a(href=`/solutions/projects/${project.id}`) details
+    include partials/footer.pug

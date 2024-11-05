@@ -34,11 +34,11 @@ projectData
   });
 
 app.get('/', (req, res) => {
-  res.render('home');
+  res.render('home', { currentPage: '/' });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about');
+  res.render('about', { currentPage: '/about' });
 });
 
 app.get('/solutions/projects', (req, res) => {
@@ -46,13 +46,8 @@ app.get('/solutions/projects', (req, res) => {
   if (sector) {
     projectData
       .getProjectsBySector(sector)
-      .then((projects) => res.render('projects', { projects }))
-      .catch((err) => res.status(404).render('404'));
-  } else {
-    projectData
-      .getAllProjects()
-      .then((projects) => res.render('projects', { projects }))
-      .catch((err) => res.status(404).render('404'));
+      .then((projects) => res.render('projects', { projects, currentPage: '/projects' }))
+      .catch((err) => res.status(404).render('404', { currentPage: '' }));
   }
 });
 
@@ -60,13 +55,13 @@ app.get('/solutions/projects/:id', (req, res) => {
   const projectId = parseInt(req.params.id, 10);
   projectData
     .getProjectById(projectId)
-    .then((project) => res.render('projectDetails', { project }))
-    .catch((err) => res.status(404).render('404'));
+    .then((project) => res.render('projectDetails', { project, currentPage: '/projects' }))
+    .catch((err) => res.status(404).render('404', { currentPage: '' }));
 });
 
 // Custom 404 page
 app.use((req, res) => {
-  res.status(404).render('404');
+  res.status(404).render('404', { currentPage: '' });
 });
 
 app.listen(HTTP_PORT, () => {

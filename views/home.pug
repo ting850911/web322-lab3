@@ -8,30 +8,20 @@ html(lang="en")
     link(rel="stylesheet" href="/css/custom.css")
   body
     include partials/navbar.pug
-    div.min-h-screen.container.mx-auto
-      div.hero.min-h-screen.bg-base-200.main-view
-        div.hero-content.text-center
-          div.max-w-md
+    .min-h-screen.container.mx-auto
+      .hero.min-h-screen.bg-base-200.main-view
+        .hero-content.text-center
+          .max-w-md
             h1.text-5xl.font-bold Explore Projects
             p.py-6 Discover innovative solutions and projects aimed at tackling climate change.
             span.material-symbols-outlined
       div(class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4")
-        div.card
-          img(src="https://fakeimg.pl/350x200/?text=Project1" alt="Project 1 Image").card-img-top
-          div(class="card-body relative py-2 px-1 h-2/5")
-            h5.card-title Project 1
-            p.card-text Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam necessitatibus voluptates repellat mollitia assumenda recusandae temporibus consequuntur ab dolor blanditiis iure harum a commodi, sit, ducimus, fugiat totam rerum natus!
-            a(href="/solutions/projects/1" class="absolute right-0 bottom-0 text-info ") Learn More
-        div.card
-          img(src="https://fakeimg.pl/350x200/?text=Project2" alt="Project 2 Image").card-img-top
-          div(class="card-body relative py-2 px-1 h-2/5")
-            h5.card-title Project 2
-            p.card-text Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet recusandae et voluptates doloribus magni, eius explicabo unde aspernatur modi sunt assumenda eligendi fugit suscipit autem porro, quis necessitatibus repellendus quibusdam.
-            a(href="/solutions/projects/2" class="absolute right-0 bottom-0 text-info") Learn More
-        div.card
-          img(src="https://fakeimg.pl/350x200/?text=Project3" alt="Project 3 Image").card-img-top
-          div(class="card-body relative py-2 px-1 h-2/5")
-            h5.card-title Project 3
-            p.card-text Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam officia sed neque, cum accusantium fugiat, a omnis alias cupiditate eaque assumenda quo voluptatibus consequatur, tempora quam iusto porro dignissimos. Veniam!
-            a(href="/solutions/projects/3" class="absolute right-0 bottom-0 text-info") Learn More
+        - var projects = [{id: '1', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam necessitatibus voluptates repellat mollitia assumenda recusandae temporibus consequuntur ab dolor blanditiis iure harum a commodi, sit, ducimus, fugiat totam rerum natus!'}, {id: '2', description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet recusandae et voluptates doloribus magni, eius explicabo unde aspernatur modi sunt assumenda eligendi fugit suscipit autem porro, quis necessitatibus repellendus quibusdam.'}, {id: '3', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam officia sed neque, cum accusantium fugiat, a omnis alias cupiditate eaque assumenda quo voluptatibus consequatur, tempora quam iusto porro dignissimos. Veniam!'} ];
+        each project in projects
+          .card 
+            img(src=`https://fakeimg.pl/350x200/?text=Project ${project.id}` alt=`Project ${project.id} Image`).card-img-top
+            div(class="card-body relative py-2 px-1 h-2/5")
+              h5.card-title= 'Project ' + project.id
+              p.card-text= project.description
+              a(href=`/solutions/projects/${project.id}` class="absolute right-0 bottom-0 text-info") Learn More
     include partials/footer.pug

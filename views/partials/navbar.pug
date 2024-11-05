@@ -1,17 +1,15 @@
 nav.navbar
-  div.flex-1
-    a(href="/" class="text-xl") Climate Solutions
-  div.flex-1
-    a(href="/about") About
-  div.flex-1.dropdown
-    button(type="button") Sector
+  .flex-1
+    a(href="/" class=`text-xl ${currentPage === '/' ? 'active' : ''}`) Climate Solutions
+  .flex-1
+    a(href="/about" class=`${currentPage === '/about' ? 'active' : ''}`) About
+  .flex-1.dropdown
+    button(type="button" class=`${currentPage === '/projects' ? 'active' : ''}`) Sector
     ul(tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow")
-      li
-        a(href="/solutions/projects?sector=Industry") Project 1
-      li
-        a(href="/solutions/projects?sector=Transportation") Project 2
-      li
-        a(href="/solutions/projects?sector=Electricity") Project 3
+      - var sectors = ['Industry', 'Transportation', 'Electricity'];
+      each sector in sectors
+        li 
+          a(href=`/solutions/projects?sector=${sector}`)= sector
 script.
   document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.navbar');

@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Projects
+    link(rel="stylesheet" href="/css/main.css")
+    link(rel="stylesheet" href="/css/custom.css")
+  body
+    include partials/navbar.pug
+    if project
+      .min-h-screen.container.mx-auto
+        .hero.bg-base-200.p-4
+          .hero-content.text-center
+            .max-w-md
+              h1.text-5xl.font-bold=project.title
+              p.py-6 Below, you will find detailed information about the project: #{project.title}
+        div(class="flex justify-center gap-5")
+          img(src=project.feature_img_url, alt=project.title class="rounded-lg w-1/2")
+          div
+            p.lh-2=project.intro_short
+            p.lh-2.font-bold impact:
+            p.lh-2=project.impact
+            p.lh-2 More Information: 
+              a(href=project.original_source_url target="_blank")=project.original_source_url
+            a.lh-2.btn.btn-primary.btn-sm(href="#" onclick="history.back();") Back
+    
+    include partials/footer.pug
