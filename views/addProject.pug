@@ -1,0 +1,47 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Add Projects
+    link(rel="stylesheet" href=`/css/main.css?ts=${timestamp}`)
+    link(rel="stylesheet" href=`/css/custom.css?ts=${timestamp}`)
+  body
+    include partials/navbar.pug
+    .min-h-screen.container.mx-auto
+      .hero.bg-base-200.p-4
+        .hero-content.text-center
+          .max-w-md
+            h1.text-5xl.font-bold Add Projects
+            p.py-6 Use the below form to add a new Project to the collection
+      .overflow-x-auto
+        form(action="/solutions/addProject", method="post")
+          .mb-6
+            label(for="title", class="block font-medium my-2") Title
+            input#title(name="title", type="text", required, class="w-full rounded-md px-3 py-2")
+          .mb-6
+            label(for="feature_img_url", class="block font-medium my-2") Feature Image (URL)
+            input#feature_img_url(name="feature_img_url", type="url", required, class="w-full rounded-md px-3 py-2")
+          .mb-6
+            label(for="sector_id", class="block font-medium my-2") Sector
+            select#sector_id(name="sector_id", required, class="w-full rounded-md px-3 py-2")
+              option(value="1") Land Sinks
+              option(value="2") Industry
+              option(value="3") Transportation
+              option(value="4") Electricity
+              option(value="5") Food, Agriculture, and Land Use
+          .mb-6
+            label(for="intro_short", class="block font-medium my-2") Intro
+            textarea#intro_short(name="intro_short", required, class="w-full rounded-md px-3 py-2 h-40", spellcheck="false")
+          .mb-6
+            label(for="summary_short", class="block font-medium my-2") Short Summary
+            textarea#summary_short(name="summary_short", required, class="w-full rounded-md px-3 py-2 h-40", spellcheck="false")
+          .mb-6
+            label(for="impact", class="block font-medium my-2") Impact
+            textarea#impact(name="impact", required, class="w-full rounded-md px-3 py-2 h-40", spellcheck="false")
+          .mb-6
+            label(for="original_source_url", class="block font-medium my-2") Original Source (URL)
+            input#original_source_url(name="original_source_url", type="url", required, class="w-full rounded-md px-3 py-2")
+          .mt-6
+            button(type="submit", class="btn btn-primary w-full btn-sm") Add Project
+    include partials/footer.pug

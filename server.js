@@ -65,9 +65,87 @@ app.get('/solutions/projects/:id', (req, res) => {
     .catch((err) => res.status(404).render('404', { currentPage: '' }));
 });
 
+app.get('/solutions/addProject', (req, res) => {
+  projectData
+    .getAllSectors()
+    .then((sectors) => {
+      res.render('addProject', {
+        sectors: sectors,
+        currentPage: '/solutions/addProject',
+      });
+    })
+    .catch((err) => {
+      res.render('500', {
+        message: `An error occurred: ${err}`,
+        currentPage: '',
+      });
+    });
+});
+
+app.post('/solutions/addProject', (req, res) => {
+  projectData
+    .addProject(req.body)
+    .then(() => {
+      res.redirect('/solutions/projects');
+    })
+    .catch((err) => {
+      res.render('500', {
+        message: `I'm sorry, but we have encountered the following error: ${err}`,
+        currentPage: '',
+      });
+    });
+});
+
+app.get('/solutions/editProject/:id', (req, res) => {
+  Promise.all([projectData.getProjectById(req.params.id), projectData.getAllSectors()])
+    .then(([project, sectors]) => {
+      res.render('editProject', {
+        project: project,
+        sectors: sectors,
+        currentPage: '',
+      });
+    })
+    .catch((err) => {
+      res.status(404).render('404', {
+        message: err,
+        currentPage: '',
+      });
+    });
+});
+
+app.post('/solutions/editProject', (req, res) => {
+  projectData
+    .editProject(req.body.id, req.body)
+    .then(() => {
+      res.redirect('/solutions/projects');
+    })
+    .catch((err) => {
+      res.render('500', {
+        message: `I'm sorry, but we have encountered the following error: ${err}`,
+        currentPage: '',
+      });
+    });
+});
+
+app.get('/solutions/deleteProject/:id', (req, res) => {
+  projectData.deleteProject(req.params.id)
+    .then(() => {
+      res.redirect('/solutions/projects');
+    })
+    .catch((err) => {
+      res.render('500', {
+        message: `I'm sorry, but we have encountered the following error: ${err}`,
+        currentPage: ''
+      });
+    });
+});
 // Custom 404 page
 app.use((req, res) => {
   res.status(404).render('404', { currentPage: '' });
+});
+
+app.use((req, res) => {
+  res.status(500).render('500', { currentPage: '' });
 });
 
 app.listen(HTTP_PORT, () => {

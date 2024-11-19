@@ -3,6 +3,8 @@ nav.navbar
     a(href="/" class=`text-xl ${currentPage === '/' ? 'active' : ''}`) Climate Solutions
   .flex-1
     a(href="/about" class=`${currentPage === '/about' ? 'active' : ''}`) About
+  .flex-1
+    a(href="/solutions/addProject" class=`${currentPage === '/solutions/addProject' ? 'active' : ''}`) Add Project
   .flex-1.dropdown
     button(type="button" class=`${currentPage === '/projects' ? 'active' : ''}`) Sector
     ul(tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow")

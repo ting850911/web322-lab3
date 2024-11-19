@@ -89,4 +89,38 @@ function getProjectsBySector(sector) {
     .catch((err) => Promise.reject(`Failed to fetch projects: ${err.message}`));
 }
 
-module.exports = { initialize, getAllProjects, getProjectById, getProjectsBySector };
+function getAllSectors() {
+  return Sector.findAll()
+    .then(sectors => {
+      if (sectors.length > 0) {
+        return Promise.resolve(sectors);
+      } else {
+        return Promise.reject("No sectors found");
+      }
+    })
+    .catch(err => Promise.reject(`Failed to fetch sectors: ${err.message}`));
+}
+
+function addProject(projectData) {
+  return Project.create(projectData)
+    .then(() => Promise.resolve())
+    .catch(err => Promise.reject(err.errors[0].message));
+}
+
+function editProject(id, projectData) {
+  return Project.update(projectData, {
+    where: { id: id }
+  })
+    .then(() => Promise.resolve())
+    .catch(err => Promise.reject(err.errors[0].message));
+}
+
+function deleteProject(id) {
+  return Project.destroy({
+    where: { id: id }
+  })
+    .then(() => Promise.resolve())
+    .catch(err => Promise.reject(err.errors[0].message));
+}
+
+module.exports = { initialize, getAllProjects, getProjectById, getProjectsBySector, getAllSectors, addProject, editProject, deleteProject };
