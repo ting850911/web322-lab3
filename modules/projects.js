@@ -42,7 +42,14 @@ function initialize() {
 }
 
 function getAllProjects() {
-  return Project.findAll()
+  return Project.findAll({
+    include: [
+      {
+        model: Sector,
+        required: true,
+      },
+    ],
+  })
     .then((projects) => Promise.resolve(projects))
     .catch((err) => Promise.reject(`Failed to fetch projects: ${err.message}`));
 }
@@ -90,6 +97,7 @@ function getProjectsBySector(sector) {
 }
 
 function getAllSectors() {
+  console.log('Attempting to fetch sectors...');
   return Sector.findAll()
     .then((sectors) => {
       if (sectors.length > 0) {

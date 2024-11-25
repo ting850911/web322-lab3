@@ -16,6 +16,7 @@ const path = require('path');
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
@@ -38,9 +39,23 @@ projectData
     console.error('Failed to initialize project data', err);
   });
 
-app.get('/', (req, res) => {
-  res.render('home', { currentPage: '/' });
-});
+  app.get('/', (req, res) => {
+    const projectIdArr = [1, 2, 3];
+  
+    Promise.all(projectIdArr.map((projectId) => projectData.getProjectById(projectId)))
+      .then((projects) => {
+        res.render('home', {
+          projects,
+          currentPage: '/',
+        });
+      })
+      .catch((err) => {
+        res.status(404).render('404', {
+          message: err,
+          currentPage: '',
+        });
+      });
+  });
 
 app.get('/about', (req, res) => {
   res.render('about', { currentPage: '/about' });
@@ -48,33 +63,26 @@ app.get('/about', (req, res) => {
 
 app.get('/solutions/projects', (req, res) => {
   const sector = req.query.sector;
-  
-  if (sector) {
-    projectData
-      .getProjectsBySector(sector)
-      .then((projects) => res.render('projects', { 
-        projects, 
+
+  Promise.all([
+    sector ? projectData.getProjectsBySector(sector) : projectData.getAllProjects(),
+    projectData.getAllSectors(),
+  ])
+    .then(([projects, sectors]) => {
+      res.render('projects', {
+        projects: projects,
+        sectors: sectors,
         currentPage: '/solutions/projects',
         selectedSector: sector,
-        sectors: res.locals.sectors 
-      }))
-      .catch((err) => res.status(404).render('404', { 
+      });
+    })
+    .catch((err) => {
+      res.status(404).render('404', {
+        message: err,
         currentPage: '',
-        sectors: res.locals.sectors 
-      }));
-  } else {
-    projectData
-      .getAllProjects()
-      .then((projects) => res.render('projects', { 
-        projects, 
-        currentPage: '/solutions/projects',
-        sectors: res.locals.sectors 
-      }))
-      .catch((err) => res.status(404).render('404', { 
-        currentPage: '',
-        sectors: res.locals.sectors 
-      }));
-  }
+        sectors: [],
+      });
+    });
 });
 
 app.get('/solutions/projects/:id', (req, res) => {

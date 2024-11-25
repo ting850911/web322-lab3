@@ -26,7 +26,7 @@ html(lang="en")
             label(for="sector_id", class="block font-medium my-2") Sector
             select#sector_id(name="sector_id", required, class="w-full rounded-md px-3 py-2")
               each sector in sectors
-                option(value=sector.id )= sector
+                option(value=sector.id )= sector.sector_name
           .mb-6
             label(for="intro_short", class="block font-medium my-2") Intro
             textarea#intro_short(name="intro_short", required, class="w-full rounded-md px-3 py-2 h-40", spellcheck="false")

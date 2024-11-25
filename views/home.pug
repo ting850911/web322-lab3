@@ -16,12 +16,11 @@ html(lang="en")
             p.py-6 Discover innovative solutions and projects aimed at tackling climate change.
             span.material-symbols-outlined
       div(class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4")
-        - var projects = [{id: '1', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam necessitatibus voluptates repellat mollitia assumenda recusandae temporibus consequuntur ab dolor blanditiis iure harum a commodi, sit, ducimus, fugiat totam rerum natus!'}, {id: '2', description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet recusandae et voluptates doloribus magni, eius explicabo unde aspernatur modi sunt assumenda eligendi fugit suscipit autem porro, quis necessitatibus repellendus quibusdam.'}, {id: '3', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam officia sed neque, cum accusantium fugiat, a omnis alias cupiditate eaque assumenda quo voluptatibus consequatur, tempora quam iusto porro dignissimos. Veniam!'} ];
         each project in projects
           .card 
-            img(src=`https://fakeimg.pl/350x200/?text=Project ${project.id}` alt=`Project ${project.id} Image`).card-img-top
+            img(src=project.feature_img_url alt=`Project ${project.id} Image`).card-img-top
             div(class="card-body relative py-2 px-1 h-2/5")
-              h5.card-title= 'Project ' + project.id
-              p.card-text= project.description
+              h5.card-title= project.title
+              p.card-text= project.summary_short
               a(href=`/solutions/projects/${project.id}` class="absolute right-0 bottom-0 text-info") Learn More
     include partials/footer.pug
