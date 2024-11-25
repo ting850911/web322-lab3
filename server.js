@@ -14,7 +14,6 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/public'));
@@ -49,11 +48,32 @@ app.get('/about', (req, res) => {
 
 app.get('/solutions/projects', (req, res) => {
   const sector = req.query.sector;
+  
   if (sector) {
     projectData
       .getProjectsBySector(sector)
-      .then((projects) => res.render('projects', { projects, currentPage: '/projects' }))
-      .catch((err) => res.status(404).render('404', { currentPage: '' }));
+      .then((projects) => res.render('projects', { 
+        projects, 
+        currentPage: '/solutions/projects',
+        selectedSector: sector,
+        sectors: res.locals.sectors 
+      }))
+      .catch((err) => res.status(404).render('404', { 
+        currentPage: '',
+        sectors: res.locals.sectors 
+      }));
+  } else {
+    projectData
+      .getAllProjects()
+      .then((projects) => res.render('projects', { 
+        projects, 
+        currentPage: '/solutions/projects',
+        sectors: res.locals.sectors 
+      }))
+      .catch((err) => res.status(404).render('404', { 
+        currentPage: '',
+        sectors: res.locals.sectors 
+      }));
   }
 });
 
@@ -61,7 +81,7 @@ app.get('/solutions/projects/:id', (req, res) => {
   const projectId = parseInt(req.params.id, 10);
   projectData
     .getProjectById(projectId)
-    .then((project) => res.render('projectDetails', { project, currentPage: '/projects' }))
+    .then((project) => res.render('projectDetails', { project, currentPage: '/solutions/projects' }))
     .catch((err) => res.status(404).render('404', { currentPage: '' }));
 });
 
@@ -128,17 +148,19 @@ app.post('/solutions/editProject', (req, res) => {
 });
 
 app.get('/solutions/deleteProject/:id', (req, res) => {
-  projectData.deleteProject(req.params.id)
+  projectData
+    .deleteProject(req.params.id)
     .then(() => {
       res.redirect('/solutions/projects');
     })
     .catch((err) => {
       res.render('500', {
         message: `I'm sorry, but we have encountered the following error: ${err}`,
-        currentPage: ''
+        currentPage: '',
       });
     });
 });
+
 // Custom 404 page
 app.use((req, res) => {
   res.status(404).render('404', { currentPage: '' });

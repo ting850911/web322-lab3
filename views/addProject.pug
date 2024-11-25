@@ -25,11 +25,8 @@ html(lang="en")
           .mb-6
             label(for="sector_id", class="block font-medium my-2") Sector
             select#sector_id(name="sector_id", required, class="w-full rounded-md px-3 py-2")
-              option(value="1") Land Sinks
-              option(value="2") Industry
-              option(value="3") Transportation
-              option(value="4") Electricity
-              option(value="5") Food, Agriculture, and Land Use
+              each sector in sectors
+                option(value=sector.id )= sector
           .mb-6
             label(for="intro_short", class="block font-medium my-2") Intro
             textarea#intro_short(name="intro_short", required, class="w-full rounded-md px-3 py-2 h-40", spellcheck="false")

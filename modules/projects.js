@@ -42,7 +42,7 @@ function initialize() {
 }
 
 function getAllProjects() {
-  return Project.findAll({ attributes: ['Sector'] })
+  return Project.findAll()
     .then((projects) => Promise.resolve(projects))
     .catch((err) => Promise.reject(`Failed to fetch projects: ${err.message}`));
 }
@@ -91,36 +91,60 @@ function getProjectsBySector(sector) {
 
 function getAllSectors() {
   return Sector.findAll()
-    .then(sectors => {
+    .then((sectors) => {
       if (sectors.length > 0) {
         return Promise.resolve(sectors);
       } else {
-        return Promise.reject("No sectors found");
+        return Promise.reject('No sectors found');
       }
     })
-    .catch(err => Promise.reject(`Failed to fetch sectors: ${err.message}`));
+    .catch((err) => Promise.reject(`Failed to fetch sectors: ${err.message}`));
 }
 
 function addProject(projectData) {
-  return Project.create(projectData)
-    .then(() => Promise.resolve())
-    .catch(err => Promise.reject(err.errors[0].message));
+  if (projectData) {
+    return Project.create(projectData)
+      .then(() => Promise.resolve())
+      .catch((err) => {
+        if (err.errors && err.errors[0]) {
+          return Promise.reject(err.errors[0].message);
+        }
+        return Promise.reject('Failed to add project');
+      });
+  }
 }
 
 function editProject(id, projectData) {
   return Project.update(projectData, {
-    where: { id: id }
+    where: { id: id },
   })
     .then(() => Promise.resolve())
-    .catch(err => Promise.reject(err.errors[0].message));
+    .catch((err) => Promise.reject(err.errors[0].message));
 }
 
 function deleteProject(id) {
-  return Project.destroy({
-    where: { id: id }
-  })
-    .then(() => Promise.resolve())
-    .catch(err => Promise.reject(err.errors[0].message));
+  return new Promise((resolve, reject) => {
+    Project.destroy({
+      where: {
+        id: id,
+      },
+    })
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err.errors && err.errors[0] ? err.errors[0].message : 'Failed to delete project');
+      });
+  });
 }
 
-module.exports = { initialize, getAllProjects, getProjectById, getProjectsBySector, getAllSectors, addProject, editProject, deleteProject };
+module.exports = {
+  initialize,
+  getAllProjects,
+  getProjectById,
+  getProjectsBySector,
+  getAllSectors,
+  addProject,
+  editProject,
+  deleteProject,
+};

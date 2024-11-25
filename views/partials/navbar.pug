@@ -6,12 +6,7 @@ nav.navbar
   .flex-1
     a(href="/solutions/addProject" class=`${currentPage === '/solutions/addProject' ? 'active' : ''}`) Add Project
   .flex-1.dropdown
-    button(type="button" class=`${currentPage === '/projects' ? 'active' : ''}`) Sector
-    ul(tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow")
-      - var sectors = ['Industry', 'Transportation', 'Electricity'];
-      each sector in sectors
-        li 
-          a(href=`/solutions/projects?sector=${sector}`)= sector
+    a(href="/solutions/projects" class=`${currentPage === '/solutions/projects' ? 'active' : ''}`) View Projects
 script.
   document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.navbar');
