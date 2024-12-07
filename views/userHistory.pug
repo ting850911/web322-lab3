@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title User History
+    link(rel="stylesheet" href=`/css/main.css?ts=${timestamp}`)
+    link(rel="stylesheet" href=`/css/custom.css?ts=${timestamp}`)
+  body
+    include partials/navbar.pug
+    .min-h-screen.container.mx-auto
+      .hero.bg-base-200.p-4
+        .hero-content.text-center.z-auto.w-full
+          .w-full
+            h1.text-5xl.font-bold Login History
+            p.py-6 Welcome, #{session.user.userName}!
+            p.text-lg Email: #{session.user.email}
+      .overflow-x-auto
+        table.table.table-zebra
+          thead
+            tr
+              th Login Date/Time
+              th Client Information
+          tbody
+            each entry in session.user.loginHistory
+              tr
+                td= entry.dateTime
+                td= entry.userAgent
+    include partials/footer.pug

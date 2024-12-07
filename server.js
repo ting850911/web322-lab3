@@ -11,6 +11,9 @@
  * Published URL: _____https://web322-lab3.vercel.app/__________________________
  *
  ********************************************************************************/
+const authData = require('./modules/auth-service');
+const projectData = require('./modules/projects');
+const clientSessions = require('client-sessions');
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -27,35 +30,57 @@ app.use((req, res, next) => {
   next();
 });
 
-const projectData = require('./modules/projects');
+// Set up client-sessions middleware
+app.use(clientSessions({
+  cookieName: "session",
+  secret: "o6LjQ5EVNC28ZgK64hDELM18ScpFQr",
+  duration: 2 * 60 * 1000,
+  activeDuration: 1000 * 60
+}));
+
+// Middleware to make session data available to templates
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
+
+// Helper middleware function to check if user is logged in
+function ensureLogin(req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/login');
+  } else {
+    next();
+  }
+}
+
 projectData
   .initialize()
+  .then(authData.initialize)
   .then(() => {
-    app.listen(8000, () => {
-      console.log('Server is running on port 8000');
+    app.listen(HTTP_PORT, () => {
+      console.log(`Server is running on port ${HTTP_PORT}`);
     });
   })
   .catch((err) => {
-    console.error('Failed to initialize project data', err);
+    console.error('Failed to initialize server:', err);
   });
 
-  app.get('/', (req, res) => {
-    const projectIdArr = [1, 2, 3];
-  
-    Promise.all(projectIdArr.map((projectId) => projectData.getProjectById(projectId)))
-      .then((projects) => {
-        res.render('home', {
-          projects,
-          currentPage: '/',
-        });
-      })
-      .catch((err) => {
-        res.status(404).render('404', {
-          message: err,
-          currentPage: '',
-        });
+app.get('/', (req, res) => {
+  projectData.getAllProjects()
+    .then((projects) => {
+      const featuredProjects = projects.slice(0, 3);
+      res.render('home', {
+        projects: featuredProjects,
+        currentPage: '/',
       });
-  });
+    })
+    .catch((err) => {
+      res.status(404).render('404', {
+        message: err,
+        currentPage: '',
+      });
+    });
+});
 
 app.get('/about', (req, res) => {
   res.render('about', { currentPage: '/about' });
@@ -93,7 +118,7 @@ app.get('/solutions/projects/:id', (req, res) => {
     .catch((err) => res.status(404).render('404', { currentPage: '' }));
 });
 
-app.get('/solutions/addProject', (req, res) => {
+app.get('/solutions/addProject', ensureLogin, (req, res) => {
   projectData
     .getAllSectors()
     .then((sectors) => {
@@ -110,7 +135,7 @@ app.get('/solutions/addProject', (req, res) => {
     });
 });
 
-app.post('/solutions/addProject', (req, res) => {
+app.post('/solutions/addProject', ensureLogin, (req, res) => {
   projectData
     .addProject(req.body)
     .then(() => {
@@ -124,7 +149,7 @@ app.post('/solutions/addProject', (req, res) => {
     });
 });
 
-app.get('/solutions/editProject/:id', (req, res) => {
+app.get('/solutions/editProject/:id', ensureLogin, (req, res) => {
   Promise.all([projectData.getProjectById(req.params.id), projectData.getAllSectors()])
     .then(([project, sectors]) => {
       res.render('editProject', {
@@ -141,7 +166,7 @@ app.get('/solutions/editProject/:id', (req, res) => {
     });
 });
 
-app.post('/solutions/editProject', (req, res) => {
+app.post('/solutions/editProject', ensureLogin, (req, res) => {
   projectData
     .editProject(req.body.id, req.body)
     .then(() => {
@@ -155,7 +180,7 @@ app.post('/solutions/editProject', (req, res) => {
     });
 });
 
-app.get('/solutions/deleteProject/:id', (req, res) => {
+app.get('/solutions/deleteProject/:id', ensureLogin, (req, res) => {
   projectData
     .deleteProject(req.params.id)
     .then(() => {
@@ -169,15 +194,68 @@ app.get('/solutions/deleteProject/:id', (req, res) => {
     });
 });
 
-// Custom 404 page
+app.get('/login', (req, res) => {
+  res.render('login', {
+    errorMessage: '',
+    userName: ''
+  });
+});
+
+app.post('/login', (req, res) => {
+  req.body.userAgent = req.get('User-Agent');
+  
+  authData.checkUser(req.body).then((user) => {
+    req.session.user = {
+      userName: user.userName,
+      email: user.email,
+      loginHistory: user.loginHistory
+    }
+    res.redirect('/solutions/projects');
+  }).catch((err) => {
+    res.render('login', {
+      errorMessage: err,
+      userName: req.body.userName
+    });
+  });
+});
+
+app.get('/register', (req, res) => {
+  res.render('register', {
+    errorMessage: '',
+    successMessage: '',
+    userName: ''
+  });
+});
+
+app.post('/register', (req, res) => {
+  authData.registerUser(req.body).then(() => {
+    res.render('register', {
+      errorMessage: '',
+      successMessage: 'User created',
+      userName: ''
+    });
+  }).catch((err) => {
+    res.render('register', {
+      errorMessage: err,
+      successMessage: '',
+      userName: req.body.userName
+    });
+  });
+});
+
+app.get('/logout', (req, res) => {
+  req.session.reset();
+  res.redirect('/');
+});
+
+app.get('/userHistory', ensureLogin, (req, res) => {
+  res.render('userHistory');
+});
+
 app.use((req, res) => {
   res.status(404).render('404', { currentPage: '' });
 });
 
 app.use((req, res) => {
   res.status(500).render('500', { currentPage: '' });
-});
-
-app.listen(HTTP_PORT, () => {
-  console.log(`server listening on: ${HTTP_PORT}`);
 });

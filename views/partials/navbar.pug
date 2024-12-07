@@ -1,12 +1,64 @@
 nav.navbar
   .flex-1
-    a(href="/" class=`text-xl ${currentPage === '/' ? 'active' : ''}`) Climate Solutions
-  .flex-1
-    a(href="/about" class=`${currentPage === '/about' ? 'active' : ''}`) About
-  .flex-1
-    a(href="/solutions/addProject" class=`${currentPage === '/solutions/addProject' ? 'active' : ''}`) Add Project
-  .flex-1.dropdown
-    a(href="/solutions/projects" class=`${currentPage === '/solutions/projects' ? 'active' : ''}`) View Projects
+    a.btn.btn-ghost.normal-case.text-xl(href="/") Climate Solutions
+
+  .dropdown
+    label(class="btn btn-ghost sm:hidden" tabindex="0")
+      svg.w-6.h-6(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+        path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7")
+    ul(class="menu menu-sm dropdown-content right-0 mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" tabindex="0")
+      li
+        a(href="/solutions/projects" class=`${currentPage === '/solutions/projects' ? 'active' : ''}`) View Projects
+      li
+        a(href="/about" class=`${currentPage === '/about' ? 'active' : ''}`) About
+      if session.user
+        li
+          details
+            summary Account: #{session.user.userName}
+            ul.p-2.right-0
+              li
+                a(href="/solutions/addProject" class=`${currentPage === '/solutions/addProject' ? 'active' : ''}`) Add Project
+              li
+                a(href="/userHistory" class=`${currentPage === '/userHistory' ? 'active' : ''}`) User History
+              li
+                a(href="/logout") Log Out
+      else
+        li
+          details
+            summary Account
+            ul.p-2.right-0
+              li
+                a(href="/login" class=`${currentPage === '/login' ? 'active' : ''}`) Login
+              li
+                a(href="/register" class=`${currentPage === '/register' ? 'active' : ''}`) Register
+
+  div(class="navbar-center hidden sm:flex")
+    ul.menu.menu-horizontal.px-1
+      li
+        a(href="/solutions/projects" class=`${currentPage === '/solutions/projects' ? 'active' : ''}`) View Projects
+      li
+        a(href="/about" class=`${currentPage === '/about' ? 'active' : ''}`) About
+      if session.user
+        li
+          details
+            summary Account: #{session.user.userName}
+            ul.p-2.right-0
+              li
+                a(href="/solutions/addProject" class=`${currentPage === '/solutions/addProject' ? 'active' : ''}`) Add Project
+              li
+                a(href="/userHistory" class=`${currentPage === '/userHistory' ? 'active' : ''}`) User History
+              li
+                a(href="/logout") Log Out
+      else
+        li
+          details
+            summary Account
+            ul.p-2.right-0
+              li
+                a(href="/login" class=`${currentPage === '/login' ? 'active' : ''}`) Login
+              li
+                a(href="/register" class=`${currentPage === '/register' ? 'active' : ''}`) Register
+
 script.
   document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.navbar');

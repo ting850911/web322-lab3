@@ -1,0 +1,46 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Log in
+    link(rel="stylesheet" href=`/css/main.css?ts=${timestamp}`)
+    link(rel="stylesheet" href=`/css/custom.css?ts=${timestamp}`)
+  body
+    include partials/navbar.pug
+    .min-h-screen.container.mx-auto
+      .hero.bg-base-200.p-4
+        .hero-content.text-center.z-auto.w-full
+          .w-full
+            h1.text-5xl.font-bold Log in
+            p.py-6 Please provide your credentials below
+      .overflow-x-auto
+        if errorMessage
+          .alert.alert-error.shadow-lg
+            svg.stroke-current.shrink-0.h-6.w-6(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24")
+                path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z")
+            span= errorMessage
+        form.card.w-full.shadow-2xl.bg-base-100(method="post" action="/login")
+          .card-body
+            .form-control
+              label.label
+              span.label-text User Name
+              input.input.input-bordered(
+              type="text"
+              name="userName"
+              placeholder="User Name"
+              value=userName
+              required
+              )
+            .form-control
+              label.label
+              span.label-text Password
+              input.input.input-bordered(
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              )
+            .form-control.mt-6
+              button.btn.btn-primary(type="submit") Login
+    include partials/footer.pug
