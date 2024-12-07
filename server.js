@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
     })
     .catch((err) => {
       res.status(404).render('404', {
-        message: err,
+        message: "Sorry, we couldn't find the project you're looking for. Please try again.",
         currentPage: '',
       });
     });
@@ -103,7 +103,7 @@ app.get('/solutions/projects', (req, res) => {
     })
     .catch((err) => {
       res.status(404).render('404', {
-        message: err,
+        message: "Sorry, we couldn't find the project you're looking for. Please try again.",
         currentPage: '',
         sectors: [],
       });
@@ -160,7 +160,7 @@ app.get('/solutions/editProject/:id', ensureLogin, (req, res) => {
     })
     .catch((err) => {
       res.status(404).render('404', {
-        message: err,
+        message: "Sorry, we couldn't find the project you're looking for. Please try again.",
         currentPage: '',
       });
     });

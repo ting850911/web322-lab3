@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   loginHistory: [
     {
-      dateTime: Date,
+      dateTime: String,
       userAgent: String,
     }
   ]
@@ -71,9 +71,11 @@ function checkUser(userData) {
               if (!result) {
                 reject(`Incorrect Password for user: ${userData.userName}`);
               } else {
+                const date = new Date();
+                const formattedDate = `${date.toDateString()} - ${date.toTimeString()}`;
                 // ensures the most recent login is always at the front
                 user.loginHistory.unshift({
-                  dateTime: new Date().toString(),
+                  dateTime: formattedDate,
                   userAgent: userData.userAgent
                 });
 
