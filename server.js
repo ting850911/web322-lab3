@@ -1,12 +1,12 @@
 /********************************************************************************
- * WEB322 – Assignment 03
+ * WEB322 – Assignment 06
  *
  * I declare that this assignment is my own work in accordance with Seneca's
  * Academic Integrity Policy:
  *
  * https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
  *
- * Name: Nina Wang________ Student ID: 148817232_________ Date: _2024/10/09_____
+ * Name: Nina Wang________ Student ID: 148817232_________ Date: _2024/12/06_____
  *
  * Published URL: _____https://web322-lab3.vercel.app/__________________________
  *
