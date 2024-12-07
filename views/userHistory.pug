@@ -26,10 +26,10 @@ html(lang="en")
               tr.hover
                 td.p-4
                   - const date = new Date(history.dateTime)
-                  - const dateStr = date.toLocaleDateString('fr-CA')
-                  - const hours = date.getHours().toString().padStart(2, '0')
-                  - const minutes = date.getMinutes().toString().padStart(2, '0')
-                  - const seconds = date.getSeconds().toString().padStart(2, '0')
-                  | #{dateStr} - #{hours}:#{minutes}:#{seconds}
+                  - const dateFormatter = new Intl.DateTimeFormat('fr-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' })
+                  - const timeFormatter = new Intl.DateTimeFormat('fr-CA', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+                  - const dateStr = dateFormatter.format(date)
+                  - const timeStr = timeFormatter.format(date).replace(/\s*h\s*/g, ':').replace(/\s*min\s*/g, ':').replace(/\s*s\s*$/, '')
+                  | #{dateStr} - #{timeStr}
                 td.p-4= history.userAgent
     include partials/footer.pug
