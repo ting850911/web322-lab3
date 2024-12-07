@@ -3,7 +3,7 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title 500
+    title 500 - Server Error
     link(rel="stylesheet" href=`/css/main.css?ts=${timestamp}`)
     link(rel="stylesheet" href=`/css/custom.css?ts=${timestamp}`)
   body
@@ -12,7 +12,10 @@ html(lang="en")
       .hero-overlay.bg-opacity-60
       .hero-content.text-neutral-content.text-center.z-auto
         .max-w-md
-          h1.mb-5.text-5xl.font-bold 404
-          p.py-6 Sorry, the page you are looking for does not exist.
-          a(href="/" class="btn mt-4") Go Home
+          h1.mb-5.text-5xl.font-bold 500
+          if message
+            p.py-6= message
+          else
+            p.py-6 Sorry, an internal server error occurred. Please try again later.
+          a.btn.btn-primary.btn-sm(href="/") Go Home
     include partials/footer.pug

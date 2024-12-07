@@ -15,7 +15,7 @@ html(lang="en")
             .max-w-md
               h1.text-5xl.font-bold=project.title
               p.py-6 Below, you will find detailed information about the project: #{project.title}
-        div(class="flex justify-center gap-5")
+        div.flex.justify-center.gap-5
           img(src=project.feature_img_url, alt=project.title class="rounded-lg w-1/2")
           div
             p.lh-2=project.intro_short
@@ -23,8 +23,8 @@ html(lang="en")
             p.lh-2=project.impact
             p.lh-2 More Information: 
               a(href=project.original_source_url target="_blank")=project.original_source_url
-            a.lh-2.btn.btn-primary.btn-sm.mr-1(href="#" onclick="history.back();") Back
+            a.btn.btn-primary.btn-sm.mr-1(href="#" onclick="history.back();") Back
             if session.user
-              a.lh-2.btn.btn-primary.btn-sm(href=`/solutions/editProject/${project.id}`) Edit
+              a.btn.btn-primary.btn-sm(href=`/solutions/editProject/${project.id}`) Edit
     
     include partials/footer.pug

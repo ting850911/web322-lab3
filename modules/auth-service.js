@@ -71,9 +71,9 @@ function checkUser(userData) {
               if (!result) {
                 reject(`Incorrect Password for user: ${userData.userName}`);
               } else {
-                const date = new Date();
-                const formattedDate = `${date.toDateString()} - ${date.toTimeString()}`;
                 // ensures the most recent login is always at the front
+                const date = new Date();
+                const formattedDate = `${date.toLocaleDateString('fr-CA')} - ${date.toTimeString()}`;
                 user.loginHistory.unshift({
                   dateTime: formattedDate,
                   userAgent: userData.userAgent
